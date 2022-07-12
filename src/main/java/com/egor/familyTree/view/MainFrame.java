@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
         
         tree = new FamilyTree();
 
-        familyView = new FamilyView(tree);
+        familyView = new FamilyView(tree, this);
         
         JScrollPane mainPanel = new JScrollPane(familyView);
         mainPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

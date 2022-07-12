@@ -21,6 +21,7 @@ import java.util.NoSuchElementException;
 public class FamilyView extends JPanel {
 
   private FamilyTree tree;
+  private MainFrame frame;
 
   private Color green = new Color(12, 174, 91);
   private Color backgroundColor = new Color(166, 123, 81);
@@ -32,8 +33,9 @@ public class FamilyView extends JPanel {
 
   private TreeListener treeListener;
 
-  public FamilyView(FamilyTree familyTree) {
+  public FamilyView(FamilyTree familyTree, MainFrame frame) {
     
+    this.frame = frame;
     tree = familyTree;
       
     setBackground(backgroundColor);
@@ -75,6 +77,7 @@ public class FamilyView extends JPanel {
     setPreferredSize(new Dimension(furtherPoint[0] + Constants.ICON_WIDTH, 
         furtherPoint[1] + Constants.ICON_HEIGHT));
 
+    SwingUtilities.updateComponentTreeUI(frame);
     addPersons();
     addNodes();
   }
