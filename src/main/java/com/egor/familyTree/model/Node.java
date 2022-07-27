@@ -2,21 +2,40 @@ package com.egor.familyTree.model;
 
 import java.util.LinkedList;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
 public class Node implements Comparable<Node> {
     
+    @GenericGenerator(name = "node_generator", strategy = "increment")
+    @Id
+    @GeneratedValue(generator = "node_generator")
     private int id;
 
+    @Transient
     private LinkedList<Node> nodes;
 
     private LinkedList<Integer> childs;
+
+    @Column(name = "parent1")
     private int parent1;
+    
+    @Column(name = "parent2")
     private int parent2;
 
+    @Column(name = "x")
     public volatile int curX;
+    @Column(name = "y")
     public volatile int curY;
 
+    @Transient
     public boolean passed = false;
 
+    @Column(name = "age")
     private int age;
 
     public Node() {
