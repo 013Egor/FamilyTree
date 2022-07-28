@@ -1,11 +1,15 @@
 package com.egor.familyTree.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+@Entity
+@Table(name = "person")
 public class Person {
 
     @GenericGenerator(name = "generator", strategy = "increment")
@@ -53,10 +57,10 @@ public class Person {
     @Column(name = "photo")
     private String photo;
 
-    @Column(name = "x")
+    @Column(name = "curX")
     public volatile int curX = 0;
 
-    @Column(name = "y")
+    @Column(name = "curY")
     public volatile int curY = 0;
 
     public Person(Person person) {
