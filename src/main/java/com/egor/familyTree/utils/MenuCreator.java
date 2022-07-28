@@ -5,6 +5,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import com.egor.familyTree.database.FamilyTreeDao;
+import com.egor.familyTree.database.NodeDao;
+import com.egor.familyTree.database.PersonDao;
 import com.egor.familyTree.model.Constants;
 import com.egor.familyTree.model.FamilyTree;
 import com.egor.familyTree.model.Person;
@@ -90,6 +93,42 @@ public class MenuCreator {
                         JOptionPane.showMessageDialog(null, "Произошла ошибка при сохранении");
                     }
                 }     
+            }
+            
+        });
+
+        return item;
+    }
+
+    public static JMenuItem createSaveToDatabase(FamilyTree tree) {
+        JMenuItem item = new JMenuItem("Cохранить в базу данных");
+
+        item.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    FamilyTreeDao treeDao = new FamilyTreeDao();
+
+                    boolean savingResult = treeDao.saveTree(tree);
+                    
+                    tree.setNewId(tree.getId());
+
+                    PersonDao personDao = new PersonDao();
+                    NodeDao nodeDao = new NodeDao();
+
+                    personDao.saveAll(tree.getPersons());
+                    nodeDao.saveAll(tree.getNodes());
+                    
+                    if (savingResult == true) {
+                        JOptionPane.showMessageDialog(null, "Данные успешно сохранены в базу данных");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Произошла ошибка при сохранении");
+                    }    
+                } catch (Exception exc) {
+                    JOptionPane.showMessageDialog(null, "Произошла ошибка при сохранении");
+                }
             }
             
         });

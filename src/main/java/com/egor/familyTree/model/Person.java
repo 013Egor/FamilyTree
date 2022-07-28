@@ -1,60 +1,83 @@
 package com.egor.familyTree.model;
 
-public class Person {
-    
-    private class BirthInfo {
-        int day;
-        int month;
-        int year;
-        String place;
-        public BirthInfo() {
-            day = Constants.EMPTY;
-            month = Constants.EMPTY;
-            year = Constants.EMPTY;
-            place = "";
-        }
-        public String getDate() {
-            if (day == Constants.EMPTY || month == Constants.EMPTY || year == Constants.EMPTY) {
-                return "";
-            } else {
-                return day + "." + month + "." + year;
-            }
-        }
-        public String getAll() {
-            if (day == Constants.EMPTY || month == Constants.EMPTY || year == Constants.EMPTY) {
-                return "";
-            } else {
-                return day + "." + month + "." + year + "; " + place;
-            }
-        }
-    }
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-    private int id;
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "person")
+public class Person {
+
+    @GenericGenerator(name = "generator", strategy = "increment")
+    @Id
+    @GeneratedValue(generator = "generator")
+    @Column(name = "person_id")
+    private int personId;
+
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "firstName")
     private String firstName;
+
+    @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "middleName")
     private String middleName;
-    private BirthInfo birthInfo;
+
+    @Column(name = "day")
+    private int day;
+    @Column(name = "month")
+    private int month;
+    @Column(name = "year")
+    private int year;
+    @Column(name = "place")
+    private String place;
+
+    @Column(name = "weight")
     private double weight;
+    
+    @Column(name = "height")
     private double height;
+    
+    @Column(name = "bio")
     private String bio;
+    
+    @Column(name = "parent1")
     private int parent1;
+    
+    @Column(name = "parent2")
     private int parent2;
+    
+    @Column(name = "spouse")
     private int spouse;
+    
+    @Column(name = "photo")
     private String photo;
 
-    public volatile int curX = 0;
-    public volatile int curY = 0;
+    @Column(name = "curX")
+    public int curX = 0;
+
+    @Column(name = "curY")
+    public int curY = 0;
+
+    @Column(name = "tree_id")
+    private int treeId;
 
     public Person(Person person) {
         this.id = person.id;
         this.firstName = person.firstName;
         this.lastName = person.lastName;
         this.middleName = person.middleName;
-        this.birthInfo = new BirthInfo();
-        this.birthInfo.day = person.birthInfo.day;
-        this.birthInfo.month = person.birthInfo.month;
-        this.birthInfo.year = person.birthInfo.year;
-        this.birthInfo.place = person.birthInfo.place;
+        this.day = person.day;
+        this.month = person.month;
+        this.year = person.year;
+        this.place = person.place;
         this.weight = person.weight;
         this.height = person.height;
         this.bio = person.bio;
@@ -64,6 +87,7 @@ public class Person {
         this.photo = person.photo;
         this.curX = person.curX;
         this.curY = person.curY;
+        this.treeId = person.treeId;
     }
 
     public Person(String firstName, String lastName, String middleName) {
@@ -75,7 +99,11 @@ public class Person {
         this.parent1 = Constants.EMPTY;
         this.parent2 = Constants.EMPTY;
         this.spouse = Constants.EMPTY;
-        this.birthInfo = new BirthInfo();
+        this.place = "";
+        this.day = Constants.EMPTY;
+        this.year = Constants.EMPTY;
+        this.month = Constants.EMPTY;
+        this.treeId = Constants.EMPTY;
     }
 
     public Person() {
@@ -89,7 +117,11 @@ public class Person {
         this.parent1 = Constants.EMPTY;
         this.parent2 = Constants.EMPTY;
         this.spouse = Constants.EMPTY;
-        this.birthInfo = new BirthInfo();
+        this.place = "";
+        this.day = Constants.EMPTY;
+        this.year = Constants.EMPTY;
+        this.month = Constants.EMPTY;
+        this.treeId = Constants.EMPTY;
     }
 
     public void setPerson(Person person) {
@@ -97,10 +129,10 @@ public class Person {
         this.firstName = person.firstName;
         this.lastName = person.lastName;
         this.middleName = person.middleName;
-        this.birthInfo.day = person.birthInfo.day;
-        this.birthInfo.month = person.birthInfo.month;
-        this.birthInfo.year = person.birthInfo.year;
-        this.birthInfo.place = person.birthInfo.place;
+        this.day = person.day;
+        this.month = person.month;
+        this.year = person.year;
+        this.place = person.place;
         this.weight = person.weight;
         this.height = person.height;
         this.bio = person.bio;
@@ -108,6 +140,7 @@ public class Person {
         this.parent2 = person.parent2;
         this.spouse = person.spouse;
         this.photo = person.photo;
+        this.treeId = person.treeId;
     }
 
     public String getFullName() {
@@ -189,9 +222,9 @@ public class Person {
     }
     
     public void setBirthDay(int day, int month, int year) {
-        birthInfo.day = day;
-        birthInfo.month = month;
-        birthInfo.year = year;
+        this.day = day;
+        this.month = month;
+        this.year = year;
     }
 
     public void setBirthDay(String date) throws NumberFormatException {
@@ -199,18 +232,18 @@ public class Person {
         if (dateParts.length != 3) {
             dateParts = date.split("[/]");
         }
-        birthInfo.day = Integer.parseInt(dateParts[0]);
-        birthInfo.month = Integer.parseInt(dateParts[1]);
-        birthInfo.year = Integer.parseInt(dateParts[2]);
+        this.day = Integer.parseInt(dateParts[0]);
+        this.month = Integer.parseInt(dateParts[1]);
+        this.year = Integer.parseInt(dateParts[2]);
     }
 
     public String getBirthDay() {
-        return birthInfo.day + "/" + birthInfo.month + "/" + birthInfo.year;
+        return day + "." + month + "." + year;
     }
 
     public boolean hasBirthDay() {
-        if (birthInfo.day == Constants.EMPTY || birthInfo.month == Constants.EMPTY || 
-                birthInfo.year == Constants.EMPTY) {
+        if (day == Constants.EMPTY || month == Constants.EMPTY || 
+                year == Constants.EMPTY) {
 
             return false;
         } else {
@@ -219,11 +252,11 @@ public class Person {
     }
 
     public void setBirthPlace(String palce) {
-        birthInfo.place = palce;
+        this.place = palce;
     }
 
     public String getBirthPlace() {
-        return birthInfo.place;
+        return this.place;
     }
 
     public int getId() {
@@ -259,7 +292,11 @@ public class Person {
     }
 
     public String getBirthInfo() {
-        return birthInfo.getAll();
+        if (day == Constants.EMPTY || month == Constants.EMPTY || year == Constants.EMPTY) {
+            return "";
+        } else {
+            return day + "." + month + "." + year + "; " + place;
+        }
     }
 
     public String getShortName() {
@@ -280,12 +317,17 @@ public class Person {
 
             photoName = temp[temp.length - 1];
         }
+
+        String bInfo = "";
+        if (day != Constants.EMPTY && month != Constants.EMPTY && year != Constants.EMPTY) {
+            bInfo = day + "." + month + "." + year;
+        }
         
-        return id + "," + firstName + "," + lastName + "," + middleName + "," + birthInfo.getDate() + "," + birthInfo.place + "," + weight + "," + height + "," + parent1 + "," + parent2 + "," + spouse + "," + photoName + "," + curX + "," + curY;
+        return id + "," + firstName + "," + lastName + "," + middleName + "," + bInfo + "," + place + "," + weight + "," + height + "," + parent1 + "," + parent2 + "," + spouse + "," + photoName + "," + curX + "," + curY;
     }
 
     public int getYear() {
-        return birthInfo.year;
+        return year;
     }
 
     public boolean hasParent() {
@@ -310,7 +352,7 @@ public class Person {
             
             Person person = (Person) obj;
 
-            return person.id == this.id ? true : false; 
+            return person.id == this.id && person.treeId == this.treeId; 
         } else {
             return false;
         }
@@ -320,5 +362,69 @@ public class Person {
     public String toString() {
         
         return id + ": " + firstName + " " + lastName + " " + middleName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public int getCurX() {
+        return curX;
+    }
+
+    public void setCurX(int curX) {
+        this.curX = curX;
+    }
+
+    public int getCurY() {
+        return curY;
+    }
+
+    public void setCurY(int curY) {
+        this.curY = curY;
+    }
+
+    public int getTreeId() {
+        return treeId;
+    }
+
+    public void setTreeId(int treeId) {
+        this.treeId = treeId;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }

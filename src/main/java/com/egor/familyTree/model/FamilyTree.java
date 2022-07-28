@@ -5,18 +5,42 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import com.egor.familyTree.io.FamilyReader;
 import com.egor.familyTree.io.FamilyWriter;
 
-
-
+@Entity
+@Table(name = "familytree")
 public class FamilyTree {
 
+    @GenericGenerator(name = "tree_generator", strategy = "increment")
+    @Id
+    @GeneratedValue(generator = "tree_generator")
+    @Column(name = "id")
+    private Integer id;
+
+    @Transient
     private volatile LinkedList<Person> persons;
+    @Transient
     private volatile LinkedList<Node> nodes;
+    
+    @Column(name = "lastid")
     private int lastID;
 
+    @Column(name = "filename")
+    private String filename;
+
+    @Transient
     private FamilyReader reader;
+    @Transient
     private FamilyWriter writer;
 
     public FamilyTree() {
@@ -26,7 +50,7 @@ public class FamilyTree {
         
         reader = new FamilyReader("filename");
         writer = new FamilyWriter("filename");
-
+        filename =  "filename";
         lastID = 0;
     }
 
@@ -246,6 +270,7 @@ public class FamilyTree {
     
     public void setSavingFilename(String filename) {
         writer.setFilename(filename);
+        this.filename = filename;
     }
 
     public String getSaveFilename() {
@@ -292,4 +317,58 @@ public class FamilyTree {
 
         return true;
     }    
+
+    public void setNewId(int id) {
+        this.id = id;
+        for (Person person : persons) {
+            person.setTreeId(id);
+        }
+        for (Node node : nodes) {
+            node.setTreeId(id);
+        }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getLastID() {
+        return lastID;
+    }
+
+    public void setLastID(int lastID) {
+        this.lastID = lastID;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public void setPersons(LinkedList<Person> persons) {
+        this.persons = persons;
+    }
+
+    public FamilyReader getReader() {
+        return reader;
+    }
+
+    public void setReader(FamilyReader reader) {
+        this.reader = reader;
+    }
+
+    public FamilyWriter getWriter() {
+        return writer;
+    }
+
+    public void setWriter(FamilyWriter writer) {
+        this.writer = writer;
+    }
 }

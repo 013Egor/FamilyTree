@@ -1,23 +1,55 @@
 package com.egor.familyTree.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "nodes")
 public class Node implements Comparable<Node> {
     
+    @GenericGenerator(name = "node_generator", strategy = "increment")
+    @Id
+    @GeneratedValue(generator = "node_generator")
+    @Column(name = "node_id")
+    private int nodeId;
+
+    @Column(name = "id")
     private int id;
 
-    private LinkedList<Node> nodes;
+    @Column(name = "childs")
+    private List<Integer> childs;
 
-    private LinkedList<Integer> childs;
+    @Column(name = "parent1")
     private int parent1;
+    
+    @Column(name = "parent2")
     private int parent2;
 
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "x")
     public volatile int curX;
+    @Column(name = "y")
     public volatile int curY;
 
+    @Column(name = "tree_id")
+    private int treeId;
+
+    @Transient
     public boolean passed = false;
 
-    private int age;
+    @Transient
+    private LinkedList<Node> nodes;
 
     public Node() {
         nodes = new LinkedList<>();
@@ -72,7 +104,7 @@ public class Node implements Comparable<Node> {
         nodes.add(node);
     }
 
-    public LinkedList<Integer> getChilds() {
+    public List<Integer> getChilds() {
         return childs;
     }
 
@@ -179,5 +211,37 @@ public class Node implements Comparable<Node> {
         }
 
         return "p1: " + parent1 + " p2: " + parent2 + " c: " + c.toString(); 
+    }
+
+    public int getCurX() {
+        return curX;
+    }
+
+    public void setCurX(int curX) {
+        this.curX = curX;
+    }
+
+    public int getCurY() {
+        return curY;
+    }
+
+    public void setCurY(int curY) {
+        this.curY = curY;
+    }
+
+    public int getTreeId() {
+        return treeId;
+    }
+
+    public void setTreeId(int treeId) {
+        this.treeId = treeId;
+    }
+
+    public int getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(int nodeId) {
+        this.nodeId = nodeId;
     }
 }

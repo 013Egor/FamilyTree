@@ -22,6 +22,7 @@ public class MainFrame extends JFrame {
 
         menu.add(MenuCreator.createSaveButton(tree));
         menu.add(MenuCreator.createSaveAsButton(tree));
+        menu.add(MenuCreator.createSaveToDatabase(tree));
         menu.add(new JSeparator());
 
         menu.add(MenuCreator.createAddButton(tree, familyView));
