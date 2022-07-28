@@ -3,6 +3,7 @@ package com.egor.familyTree.view;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import com.egor.familyTree.database.PersonDao;
 import com.egor.familyTree.model.Constants;
 import com.egor.familyTree.model.FamilyTree;
 import com.egor.familyTree.model.Person;
@@ -72,7 +73,8 @@ public class PersonComponent extends JComponent {
         @Override
         public void mouseClicked(MouseEvent e) {
           PersonInfo window = new PersonInfo(JSplitPane.HORIZONTAL_SPLIT, thisComponent);
-
+          PersonDao personDao = new PersonDao();
+          personDao.savePerson(person);
           JOptionPane.showMessageDialog(null, window, person.getFirstName(), JOptionPane.PLAIN_MESSAGE);
         }
 

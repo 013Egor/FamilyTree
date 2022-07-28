@@ -41,6 +41,7 @@ public class PersonDao {
             for (Person person : persons) {
                 session.persist(person);
             }
+            
 
             transaction.commit();
         } catch (Exception e) {

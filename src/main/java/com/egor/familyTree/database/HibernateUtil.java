@@ -5,6 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import com.egor.familyTree.model.FamilyTree;
 import com.egor.familyTree.model.Node;
 import com.egor.familyTree.model.Person;
 
@@ -20,6 +21,7 @@ public class HibernateUtil {
                 configuration.configure("hibernate.cfg.xml");
                 configuration.addAnnotatedClass(Person.class);
                 configuration.addAnnotatedClass(Node.class);
+                configuration.addAnnotatedClass(FamilyTree.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 

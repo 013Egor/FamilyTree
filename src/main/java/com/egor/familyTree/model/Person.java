@@ -1,10 +1,10 @@
 package com.egor.familyTree.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,6 +15,9 @@ public class Person {
     @GenericGenerator(name = "generator", strategy = "increment")
     @Id
     @GeneratedValue(generator = "generator")
+    @Column(name = "person_id")
+    private int personId;
+
     @Column(name = "id")
     private Integer id;
 
@@ -58,10 +61,13 @@ public class Person {
     private String photo;
 
     @Column(name = "curX")
-    public volatile int curX = 0;
+    public int curX = 0;
 
     @Column(name = "curY")
-    public volatile int curY = 0;
+    public int curY = 0;
+
+    @Column(name = "tree_id")
+    private int treeId;
 
     public Person(Person person) {
         this.id = person.id;
@@ -81,6 +87,7 @@ public class Person {
         this.photo = person.photo;
         this.curX = person.curX;
         this.curY = person.curY;
+        this.treeId = person.treeId;
     }
 
     public Person(String firstName, String lastName, String middleName) {
@@ -96,6 +103,7 @@ public class Person {
         this.day = Constants.EMPTY;
         this.year = Constants.EMPTY;
         this.month = Constants.EMPTY;
+        this.treeId = Constants.EMPTY;
     }
 
     public Person() {
@@ -113,6 +121,7 @@ public class Person {
         this.day = Constants.EMPTY;
         this.year = Constants.EMPTY;
         this.month = Constants.EMPTY;
+        this.treeId = Constants.EMPTY;
     }
 
     public void setPerson(Person person) {
@@ -131,6 +140,7 @@ public class Person {
         this.parent2 = person.parent2;
         this.spouse = person.spouse;
         this.photo = person.photo;
+        this.treeId = person.treeId;
     }
 
     public String getFullName() {
@@ -342,7 +352,7 @@ public class Person {
             
             Person person = (Person) obj;
 
-            return person.id == this.id ? true : false; 
+            return person.id == this.id && person.treeId == this.treeId; 
         } else {
             return false;
         }
@@ -352,5 +362,69 @@ public class Person {
     public String toString() {
         
         return id + ": " + firstName + " " + lastName + " " + middleName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public int getCurX() {
+        return curX;
+    }
+
+    public void setCurX(int curX) {
+        this.curX = curX;
+    }
+
+    public int getCurY() {
+        return curY;
+    }
+
+    public void setCurY(int curY) {
+        this.curY = curY;
+    }
+
+    public int getTreeId() {
+        return treeId;
+    }
+
+    public void setTreeId(int treeId) {
+        this.treeId = treeId;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }
